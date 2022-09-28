@@ -30,7 +30,7 @@ public class docuDAO extends ConexionBd implements Crud {
     private boolean operacion = false;
     private String sql;
 
-    private String id_alum = "", tipo_docu = "", fechcreac_docu = "", archivo_docu = "";
+    private String id_docu = "",id_alum = "", tipo_docu = "", fechcreac_docu = "", archivo_docu = "";
 
     //2. Método principal para recibir datos de VO
     public docuDAO(docuVO docuvo) {
@@ -39,7 +39,7 @@ public class docuDAO extends ConexionBd implements Crud {
 
         try {
             conexion = this.obtenerConexion();
-
+            id_docu = docuvo.getId_docu();
             id_alum = docuvo.getId_alum();
             tipo_docu = docuvo.getTipo_docu();
             fechcreac_docu = docuvo.getFechcreac_docu();
@@ -49,6 +49,10 @@ public class docuDAO extends ConexionBd implements Crud {
             Logger.getLogger(AlumnoDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    
+    public docuDAO(){
+    }
+          
 
     @Override
     public boolean agregarRegistro() {
@@ -80,16 +84,17 @@ public class docuDAO extends ConexionBd implements Crud {
 
     }
 
-    public boolean actualizarRegistro(String alumnid, String docu_tipo) {
+    @Override
+    public boolean actualizarRegistro() {
 
         try {
 
-            sql = "UPDATE documentos SET FECHCREAC_DOCU=CURRENT_TIMESTAMP, ARCHIVO_DOCU=? WHERE ID_ALUM=?";
+            sql = "UPDATE documentos SET FECHCREAC_DOCU=CURRENT_TIMESTAMP, ARCHIVO_DOCU=? WHERE ID_DOCU=?";
 
             puente = conexion.prepareStatement(sql);
 
-            puente.setString(1, alumnid);
-            puente.setString(2, docu_tipo);
+            puente.setString(1, archivo_docu);
+            puente.setString(2, id_docu);
 
             puente.executeUpdate();
             operacion = true;
@@ -108,20 +113,20 @@ public class docuDAO extends ConexionBd implements Crud {
 
     }
 
-    public docuVO consultarDocu(String id_alum) {
+    public docuVO consultarDocu(String id_docu) {
 
         docuVO doVO = null;
 
         try {
 
             conexion = this.obtenerConexion();
-            sql = "SELECT * FROM documentos WHERE ID_ALUM=?;";
+            sql = "SELECT * FROM documentos WHERE ID_DOCU=?;";
             puente = conexion.prepareStatement(sql);
-            puente.setString(1, id_alum);
+            puente.setString(1, id_docu);
             mensajero = puente.executeQuery();
 
             while (mensajero.next()) {
-                doVO = new docuVO(mensajero.getString(1), mensajero.getString(2), mensajero.getString(3), mensajero.getString(4));
+                doVO = new docuVO(mensajero.getString(1), mensajero.getString(2), mensajero.getString(3), mensajero.getString(4),mensajero.getString(5));
             }
 
         } catch (SQLException e) {
@@ -136,14 +141,70 @@ public class docuDAO extends ConexionBd implements Crud {
 
         return doVO;
     }
+    
+    public ArrayList<docuVO> listar() {
+        ArrayList<docuVO> listaDocumentos = new ArrayList<>();
+        try {
+            conexion = this.obtenerConexion();
+            sql = "SELECT * FROM `documentos`";
+            puente = conexion.prepareStatement(sql);
+            mensajero = puente.executeQuery();
+            while (mensajero.next()) {
+
+              docuVO  doVO = new docuVO(mensajero.getString(1), mensajero.getString(2), mensajero.getString(3), 
+                      mensajero.getString(4),mensajero.getString(5));
+              listaDocumentos.add(doVO);
+              
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(docuDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                this.deneterConexion();
+            } catch (SQLException e) {
+                Logger.getLogger(docuDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return listaDocumentos;
+    }
+    
+    /*public ArrayList<docuVO> ListarDocu(String id_alum) {
+
+        docuVO doVO = null;
+
+        ArrayList<docuVO> listaDocu = new ArrayList<>();
+        try {
+            conexion = this.obtenerConexion();
+            sql = "SELECT * FROM `documentos` WHERE ID_ALUM=?";
+            puente = conexion.prepareStatement(sql);
+            puente.setString(1, id_alum);
+            mensajero = puente.executeQuery();
+            while (mensajero.next()) {
+
+              doVO = new docuVO(mensajero.getString(1), mensajero.getString(2), mensajero.getString(3), 
+                      mensajero.getString(4));
+              listaDocu.add(doVO);
+              
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(docuDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                this.deneterConexion();
+            } catch (SQLException e) {
+                Logger.getLogger(docuDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        return listaDocu; 
+    }*/
+    
+    
+    
 
     @Override
     public boolean eliminarRegistro() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean actualizarRegistro() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -60,7 +60,7 @@ public class FamiliarControlador extends HttpServlet {
     //String usuPassword = request.getParameter("textClave");
     
         
-        int famiopcion = Integer.parseInt(request.getParameter("famiopcion"));
+        int opcion = Integer.parseInt(request.getParameter("opcion"));
 
         //2. el VO tiene los datos seguros
        familiarVO famivo = new familiarVO(id_fami, nom1_fami, nom2_fami, apel1_fami, apel2_fami, parent_fami, numdocu_fami, ocupac_fami, lugatrab_fami, teletrab_fami, telecel_fami, fechnaci_fami, esta_fami);
@@ -71,7 +71,7 @@ public class FamiliarControlador extends HttpServlet {
           
         
        //4. dministrar Operaciones
-          switch (famiopcion) {
+          switch (opcion) {
 
             case 1:
                 if (famidao.agregarRegistro()) {
@@ -81,6 +81,7 @@ public class FamiliarControlador extends HttpServlet {
                 }
                 request.getRequestDispatcher("familiar.jsp").forward(request, response);
                 break;
+                
 
             case 2:
               if (famidao.actualizarRegistro()) {

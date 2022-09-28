@@ -64,7 +64,7 @@ public class FamiliarDAO extends ConexionBd implements Crud {
     public boolean agregarRegistro() {
         try {
 
-            sql = "INSERT INTO familiar( 1NOM_FAMI, 2NOM_FAMI, 1APEL_FAMI, 2APEL_FAMI, PARENT_FAMI, NUMDOCU_FAMI, OCUPAC_FAMI, LUGATRAB_FAMI, TELETRAB_FAMI, TELECEL_FAMI, FECHNACI_FAMI, ESTA_FAMI) VALUES (?,?,?,?,?,?,?,?,?,?,?,? )";
+            sql = "INSERT INTO familiar( 1NOM_FAMI, 2NOM_FAMI, 1APEL_FAMI, 2APEL_FAMI, PARENT_FAMI, NUMDOCU_FAMI, OCUPAC_FAMI, LUGATRAB_FAMI, TELETRAB_FAMI, TELECEL_FAMI, FECHNACI_FAMI) VALUES (?,?,?,?,?,?,?,?,?,?,? )";
             puente = conexion.prepareStatement(sql);
 
             puente.setString(1, nom1_fami);
@@ -78,7 +78,7 @@ public class FamiliarDAO extends ConexionBd implements Crud {
             puente.setString(9, teletrab_fami);
             puente.setString(10, telecel_fami);
             puente.setString(11, fechnaci_fami);
-            puente.setString(12, esta_fami);
+           
 
             puente.executeUpdate();
             operacion = true;

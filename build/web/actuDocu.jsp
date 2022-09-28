@@ -17,25 +17,17 @@
         <title>JSP Page</title>
     </head>
     <body>
+    <center>
         <a href="alumno.jsp">Volver</a>
-        <%
-        RolDAO rolDAO = new RolDAO();
-        RolVO rolVO = new RolVO();
+        <% RolVO rolVO = new RolVO();
+            RolDAO rolDAO = new RolDAO();
+            ArrayList<RolVO> listaDatos = rolDAO.listar(usuario);
 
-        ArrayList<RolVO> listaRol = rolDAO.listar(usuario);
-        for (int i = 0; i < listaRol.size(); i++) {
-            rolVO = listaRol.get(i);
-        }
-        String id_usua = rolVO.getRolId();
+            for (int i = 0; i < listaDatos.size(); i++) {
 
-        AlumnoVO alumVO = new AlumnoVO();
-        AlumnoDAO alumDAO = new AlumnoDAO(alumVO);
-        
-        alumVO = alumDAO.consultarAlumno(id_usua);
-        
-        String id_alumn = alumVO.getId_alum();
-
-    %>
+                rolVO = listaDatos.get(i);
+            }
+        %>
          <h1>Documentos</h1>
         
         <% 
@@ -49,28 +41,29 @@
             <table>
 
                 <br>Nombre del Documento <br>
-                <input type="text" name="texttipo_docu" value="<%= doVO.getTipo_docu() %>"><br>
+                <input type="text" name="texttipo_docu" value="<%= doVO.getTipo_docu() %>" readonly><br>
                 
-                <br> arcivo <br>
+                <br> archivo <br>
                 <input type="file" name="textarchivo_docu"  value=" <%= doVO.getArchivo_docu() %>"><br>
                
             </table><br>
             <button>Actualizar</button>
             <input type="hidden" value="2" name="opcion">
-            <input type="hidden" name="textid_alum" value="<%=rolVO.getRolId()%>">
+            <input type="hidden" name="textid_docu" value="<%= doVO.getId_docu() %>">
         </form>
 
         <%} %>
+        
         <%
-            if (request.getAttribute("MensajeError") != null) { %>
-        ${MensajeError}
+            if (request.getAttribute("mensajeError") != null) { %>
+        ${mensajeError}
 
         <%} else {%>
-        ${MensajeExito}        
+        ${mensajeExito}        
         <%}%>
 
         
-        
+    </center>
         
         
         

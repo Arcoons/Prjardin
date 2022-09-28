@@ -37,7 +37,7 @@ public class DocumentControlador extends HttpServlet {
         
         
         
-       
+        String id_docu  = request.getParameter("textid_docu");
          String id_alum  = request.getParameter("textid_alum");
          String tipo_docu  = request.getParameter("texttipo_docu");
          String  fechcreac_docu = request.getParameter("textfechcreac_docu");
@@ -48,7 +48,7 @@ public class DocumentControlador extends HttpServlet {
         int opcion = Integer.parseInt(request.getParameter("opcion"));
 
         //2. el VO tiene los datos seguros
-        docuVO doVO = new docuVO(id_alum, tipo_docu, fechcreac_docu, archivo_docu);
+        docuVO doVO = new docuVO(id_docu,id_alum, tipo_docu, fechcreac_docu, archivo_docu);
 
 //3. ¿Quién hace las operaciones? DAO
         docuDAO doDAO = new docuDAO(doVO);
@@ -68,19 +68,20 @@ public class DocumentControlador extends HttpServlet {
                 break;
                 
             case 2:
-                if (doDAO.actualizarRegistro(id_alum, tipo_docu)) {
+                if (doDAO.actualizarRegistro()) {
                     request.setAttribute("mensajeExito", "se actualizo correctamente");
-                    request.getRequestDispatcher("actuDocu.jsp").forward(request, response);
+                    request.getRequestDispatcher("listarDocumentos.jsp").forward(request, response);
+                    
                 } else {
                     request.setAttribute("mensajeError", "NO se actualizo correctamente");
-                    request.getRequestDispatcher("alumno.jsp").forward(request, response);
+                    
                 }
-                
+                request.getRequestDispatcher("actuDocu.jsp").forward(request, response);
                 break;
                 
                 
             case 3:
-                doVO =doDAO.consultarDocu(id_alum);
+                doVO =doDAO.consultarDocu(id_docu);
                  
                 if (doVO != null) {
                     
@@ -90,10 +91,11 @@ public class DocumentControlador extends HttpServlet {
                     
                 }else{
                     request.setAttribute("mensajeError", "no se pudo encontrar");
-                    request.getRequestDispatcher("alumno.jsp").forward(request, response);
+                    request.getRequestDispatcher("listarDocumentos.jsp").forward(request, response);
 
                 }
                 break;
+                
             
            
           }

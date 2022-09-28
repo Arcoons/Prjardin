@@ -16,6 +16,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+    <center>
            <h1>Acudiente</h1>
         
         <% RolVO rolVO = new RolVO();
@@ -68,7 +69,7 @@
         <%}%>
 
         
-        
+    </center>
         
         
         
